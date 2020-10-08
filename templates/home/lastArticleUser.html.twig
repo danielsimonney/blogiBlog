@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<h3>Les 10 derniers articles de {{author.email}} </h3>
+<div>
+{% for blog in articles %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{blog.title}}</h5>
+         <p class="card-text">{{blog.content}}</p>
+      </div>
+      <a href="{{ path('blog_show', {'id': blog.id}) }}" class="btn btn-outline-secondary mr-3 mt-4">Voir le blog</a>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}

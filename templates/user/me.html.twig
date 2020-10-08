@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<h2 class="mt-5">Vos 5 derniers articles</h2>
+{% for blog in blogs %}
+    <div style="margin-top:70px;border:2px solid black;width:90vw; margin:auto;text-align:center;" >
+      <div class="card-body">
+        <h5 class="card-title">{{blog.title}}</h5>
+         <p class="card-text">{{blog.content|length > 30 ? blog.content|slice(0, 30) ~ '...' :blog.content}}</p>
+      </div>
+
+      <a href="{{ path('blog_show', {'id': blog.id}) }}" class="btn btn-outline-secondary mr-3 mt-4">Voir le blog</a>
+      <div class="card-footer text-muted">
+    créé le {{blog.createdAt|date('m/d/Y')}} at {{blog.createdAt|date('h:i:s A')}}
+  </div>
+  <div class="mb-5">
+    Catégories de cette article :
+    {% for category in blog.categories %}
+    <div>{{category.name}} </div>
+    {% endfor %}
+    </div >
+{% endfor %}
+    </div>
+<h2 class="mt-5"> Liste des dix derniers commentaires recus sur vos articles</h2>
+ {% for comment in comments %}
+            <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{comment.pseudo}}</h5>
+         <p class="card-text">{{comment.content}}</p>
+         <p> {{comment.email}} </p>
+         <span class="time-right">écrit le {{comment.createdAt|date('m/d/Y')}} à {{comment.createdAt|date('h:i:s A')}}</span>
+      </div>
+<a href="{{ path('blog_show', {'id': comment.article.id}) }}" class="btn btn-outline-secondary mr-3 mt-4">Voir le blog d'ou provient le commentaire</a>
+    </div>
+      {% endfor %}
+{% endblock %}

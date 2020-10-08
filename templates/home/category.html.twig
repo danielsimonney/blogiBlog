@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>Here is the list of the  {% if blogs|length < 30 %}{{blogs|length}}{% else %}30 first{% endif %} blogs for the category {{category.name}}</h1>
+<div>
+
+{% for blog in blogs %}
+    <div class="card">
+    <div class="card-header">un article écrit par {{blog.author}}</div>
+      <div class="card-body">
+        <h5 class="card-title">{{blog.title}}</h5>
+         <p class="card-text">{{blog.content|length > 30 ? blog.content|slice(0, 30) ~ '...' :blog.content}}</p>
+      </div>
+      <a href="{{ path('blog_show', {'id': blog.id}) }}" class="btn btn-outline-secondary mr-3 mt-4">Voir le blog</a>
+    </div>
+    <div>
+    {% for category in blog.categories %}
+    <div>{{category.name}} </div>
+    {% endfor %}
+    </div>
+{% endfor %}
+</div>
+{% endblock %}

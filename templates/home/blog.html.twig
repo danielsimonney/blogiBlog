@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<div>
+<h1>L'article</h1>
+    <div class="card">
+    <h2>{{blog.banner}}</h2>
+      <div class="card-body">
+        <h5 class="card-title">{{blog.title}}</h5>
+         <p class="card-text">{{blog.content}}</p>
+         <p> {{blog.author}} </p>
+         <p>Envie d'en connaître plus sur les articles de l'auteur ? 
+         <a href="{{ path('authorpage', {'id': blog.author.id}) }}">Cliquez ici</a>
+         </p>
+         <span class="time-right">{{blog.createdAt|date('m/d/Y')}} at {{blog.createdAt|date('h:i:s A')}}</span>
+         <p>Catégories de cet article </p>
+         {% for category in blog.categories %}
+    <div>{{category.name}} </div>
+    {% endfor %}
+      </div>
+    </div>
+    {% if comments is empty %}
+      <div>
+        Pas encore de commentaires pour cette article !
+      </div>
+    {% else %}
+    <div class='mt-5'>
+    Commentaires :
+      {% for comment in comments %}
+            <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{comment.pseudo}}</h5>
+         <p class="card-text">{{comment.content}}</p>
+         <p> {{comment.email}} </p>
+         <span class="time-right">{{comment.createdAt|date('m/d/Y')}} at {{comment.createdAt|date('h:i:s A')}}</span>
+      </div>
+{% if auth == true %}
+ <form method="post" action="{{ path('comment_supress', {'id': comment.id}) }}" onsubmit="return confirm('Are you sure you want to delete this message?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+    <button class="btn btn-outline-danger mr-3">Suppress the comment</button>
+</form>
+{% endif %}
+
+    </div>
+      {% endfor %}
+      </div>
+    {% endif %}
+    <div class='mt-5'>
+    <p>Envie d'écrire un nouveau commentaire ??</p>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">{{ button_label|default('send new message') }}</button>
+    {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

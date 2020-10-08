@@ -4,8 +4,44 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </head>
     <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href={{path('homepage')}} >Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+{% if is_granted('ROLE_ADMIN') %}
+
+  <li class="nav-item">
+        <a class="nav-link" href={{path('new_category')}}>Générer une nouvelle catégorie</a>
+      </li>
+     
+{% endif %}
+
+    </ul>
+    {% if is_granted('ROLE_USER') %}
+    <ul class="navbar-nav my-2 my-lg-0">
+    <li class="nav-item">
+        <a class="nav-link">your connected as {{app.user.email}}</a>
+    </li>
+  <li class="nav-item">
+        <a class="nav-link" href={{path('me')}}>my account</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href={{path('new_blog')}}>écrire un nouvelle article</a>
+    </li>
+     <li class="nav-item mr-3 ml-3">
+        <a class="nav-link btn btn-outline-success" href={{path('app_logout')}}>Logout</a>
+    </li>
+    </ul>
+    {% endif %}
+  </div>
+</nav>  
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
